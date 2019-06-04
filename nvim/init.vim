@@ -32,6 +32,8 @@ Plug 'vim-airline/vim-airline'
 
 Plug 'vim-airline/vim-airline-themes'
 
+Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
+
 " Initialize plugin system
 call plug#end()
 
