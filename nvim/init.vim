@@ -26,6 +26,8 @@ Plug 'kien/ctrlp.vim'
 
 Plug 'pangloss/vim-javascript'
 
+Plug 'scrooloose/nerdtree'
+
 " Airline is a plugin that makes the status line look fancier.
 " It requires a custom font (with arrows), and is completely optional
 Plug 'vim-airline/vim-airline'
@@ -38,12 +40,19 @@ Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 call plug#end()
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsExpandTrigger="<c-space>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
+
+" NERDTreeToggle
+map <C-n> :NERDTreeToggle<CR>
+
+" NERDTree starts up when no file is specified
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 let g:airline_theme='deus'
 
@@ -99,6 +108,24 @@ let g:prettier#config#prose_wrap = 'preserve'
 " css|strict|ignore
 let g:prettier#config#html_whitespace_sensitivity = 'css'
 
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+let g:javascript_plugin_flow = 1
+
 set number
 
 syntax enable
@@ -119,6 +146,7 @@ set lazyredraw
 set showmatch
 set incsearch
 set hlsearch
+set confirm
 
 let mapleader="," " leader is comma
 
@@ -140,6 +168,34 @@ nnoremap ^ <nop>
 " highlight last inserted text
 nnoremap gV '[v']
 
+" Mappings to access buffers (don't use "\p" because a
+" delay before pressing "p" would accidentally paste).
+" \l       : list buffers
+" \b \f \g : go back/forward/last-used
+" \1 \2 \3 : go to buffer 1/2/3 etc
+nnoremap <Leader>l :ls<CR>
+nnoremap <Leader>b :bp<CR>
+nnoremap <Leader>f :bn<CR>
+nnoremap <Leader>g :e#<CR>
+nnoremap <Leader>1 :1b<CR>
+nnoremap <Leader>2 :2b<CR>
+nnoremap <Leader>3 :3b<CR>
+nnoremap <Leader>4 :4b<CR>
+nnoremap <Leader>5 :5b<CR>
+nnoremap <Leader>6 :6b<CR>
+nnoremap <Leader>7 :7b<CR>
+nnoremap <Leader>8 :8b<CR>
+nnoremap <Leader>9 :9b<CR>
+nnoremap <Leader>0 :10b<CR>
+" It's useful to show the buffer number in the status line.
+" set laststatus=2 statusline=%02n:%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+let g:airline#extensions#tabline#buffer_nr_show = 1
+
+let c = 1
+while c <= 99
+  execute "nnoremap " . c . "gb :" . c . "b\<CR>"
+  let c += 1
+endwhile
 
 "jk is escape
 inoremap jk <esc>
