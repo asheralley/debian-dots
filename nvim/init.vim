@@ -28,11 +28,15 @@ Plug 'pangloss/vim-javascript'
 
 Plug 'scrooloose/nerdtree'
 
+Plug 'jiangmiao/auto-pairs'
+
 " Airline is a plugin that makes the status line look fancier.
 " It requires a custom font (with arrows), and is completely optional
 Plug 'vim-airline/vim-airline'
 
 Plug 'vim-airline/vim-airline-themes'
+
+Plug 'bling/vim-bufferline'
 
 Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 
@@ -55,6 +59,40 @@ autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 let g:airline_theme='deus'
+
+" It's useful to show the buffer number in the status line.
+" set laststatus=2 statusline=%02n:%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+let g:airline#extensions#tabline#buffer_nr_show = 1
+
+" air-line
+let g:airline_powerline_fonts = 1
+
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
+
+" airline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
 
 let g:prettier#autoformat = 0
 autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html Prettier
@@ -126,6 +164,8 @@ inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 let g:javascript_plugin_flow = 1
 
+let g:AutoPairsFlyMode = 1 
+
 set number
 
 syntax enable
@@ -147,6 +187,7 @@ set showmatch
 set incsearch
 set hlsearch
 set confirm
+set encoding=UTF-8
 
 let mapleader="," " leader is comma
 
@@ -187,9 +228,6 @@ nnoremap <Leader>7 :7b<CR>
 nnoremap <Leader>8 :8b<CR>
 nnoremap <Leader>9 :9b<CR>
 nnoremap <Leader>0 :10b<CR>
-" It's useful to show the buffer number in the status line.
-" set laststatus=2 statusline=%02n:%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
-let g:airline#extensions#tabline#buffer_nr_show = 1
 
 let c = 1
 while c <= 99
@@ -202,5 +240,8 @@ inoremap jk <esc>
 
 " save session
 nnoremap <leader>s :mksession<CR>
+
+" change highlight
+hi MatchParen cterm=bold ctermbg=none ctermfg=magenta
 
 set path+=**
