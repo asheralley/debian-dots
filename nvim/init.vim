@@ -22,11 +22,13 @@ Plug 'tpope/vim-fugitive'
 
 Plug 'airblade/vim-gitgutter'
 
+Plug 'tpope/vim-fugitive'
+
 Plug 'kien/ctrlp.vim'
 
 Plug 'pangloss/vim-javascript'
 
-Plug 'scrooloose/nerdtree'
+" Plug 'scrooloose/nerdtree'
 
 Plug 'jiangmiao/auto-pairs'
 
@@ -115,11 +117,11 @@ let g:prettier#config#semi = 'true'
 
 " single quotes over double quotes
 " Prettier default: false
-let g:prettier#config#single_quote = 'true'
+let g:prettier#config#single_quote = 'false'
 
 " print spaces between brackets
 " Prettier default: true
-let g:prettier#config#bracket_spacing = 'false'
+let g:prettier#config#bracket_spacing = 'true'
 
 " put > on the last line instead of new line
 " Prettier default: false
