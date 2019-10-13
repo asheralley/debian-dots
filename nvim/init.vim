@@ -13,27 +13,40 @@ Plug 'prettier/vim-prettier', {
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
 " Track the engine.
-Plug 'SirVer/ultisnips'
+" Plug 'SirVer/ultisnips'
 
 " Snippets are separated from the engine. Add this if you want them:
 Plug 'honza/vim-snippets'
-
-Plug 'tpope/vim-fugitive'
 
 Plug 'airblade/vim-gitgutter'
 
 Plug 'tpope/vim-fugitive'
 
-Plug 'kien/ctrlp.vim'
+" Plug 'kien/ctrlp.vim'
 
-Plug 'pangloss/vim-javascript'
+" language highlight
+" Plug 'pangloss/vim-javascript'
 
-" Plug 'scrooloose/nerdtree'
+" Plug 'digitaltoad/vim-jade'
+
+" syntax highlighting
+Plug 'sheerun/vim-polyglot'
+
+Plug 'scrooloose/nerdtree'
+
+" Plug 'shougo/denite.nvim'
+
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
 Plug 'jiangmiao/auto-pairs'
 
+" Color theme :
+Plug 'joshdick/onedark.vim'
+
+
 " Airline is a plugin that makes the status line look fancier.
-" It requires a custom font (with arrows), and is completely optional
+" It requires a custom font (with arrows, and is completely optional
 Plug 'vim-airline/vim-airline'
 
 Plug 'vim-airline/vim-airline-themes'
@@ -46,12 +59,42 @@ Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 call plug#end()
 
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
-let g:UltiSnipsExpandTrigger="<c-space>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+"let g:UltiSnipsExpandTrigger="<C-x>"
+"
+"" Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+"let g:UltiSnipsJumpForwardTrigger="<C-b>"
+"let g:UltiSnipsJumpBackwardTrigger="<C-z>"
+"
+"" If you want :UltiSnipsEdit to split your window.
+"let g:UltiSnipsEditSplit="vertical"
 
-" If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
+" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+"th
+"" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+"
+"" Use <C-j> for jump to next placeholder, it's default of coc.nvim
+let g:coc_snippet_next = '<c-j>'
+"
+"" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
+let g:coc_snippet_prev = '<c-k>'
+"
+"" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+"
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? coc#_select_confirm() :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+"
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+let g:coc_snippet_next = '<tab>'
 
 " NERDTreeToggle
 map <C-n> :NERDTreeToggle<CR>
@@ -60,11 +103,17 @@ map <C-n> :NERDTreeToggle<CR>
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
-let g:airline_theme='deus'
+" Colorshceme
+colorscheme onedark
+
+let g:airline_theme='onedark'
+
 
 " It's useful to show the buffer number in the status line.
 " set laststatus=2 statusline=%02n:%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 let g:airline#extensions#tabline#buffer_nr_show = 1
+
+let g:airline#extensions#tabline#enabled = 1
 
 " air-line
 let g:airline_powerline_fonts = 1
@@ -164,13 +213,24 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-let g:javascript_plugin_flow = 1
+" fzf set up here
+nnoremap <C-p> :Files<CR>
+nnoremap <Leader>b :Buffers<CR>
+nnoremap <Leader>h :History<CR>
+
+" Emmet set up here
+let g:user_emmet_leader_key='<C-Z>'
+
+" Color scheme here
+syntax on
+
+"let g:javascript_plugin_flow = 1
 
 let g:AutoPairsFlyMode = 1 
 
-set number
+set number relativenumber
 
-syntax enable
+"syntax enable
 set tabstop=2
 set softtabstop=2
 set shiftwidth=2
@@ -178,7 +238,6 @@ set expandtab
 set autoindent
 set copyindent
 set showcmd
-set cursorline
 filetype indent on
 set breakindent
 set breakindentopt=shift:2,min:40,sbr
@@ -202,7 +261,7 @@ nnoremap k gk
 
 " move to beginning/end of line
 nnoremap B ^
-nnoremap E $
+noremap E $
 
 " $/^ doesn't do anything
 nnoremap $ <nop>
@@ -211,6 +270,11 @@ nnoremap ^ <nop>
 " highlight last inserted text
 nnoremap gV '[v']
 
+" Make the 81st column stand out
+highlight ColorColumn cterm=bold ctermbg=black ctermfg=Black
+call matchadd('ColorColumn', '\%81v', 100)
+
+" 
 " Mappings to access buffers (don't use "\p" because a
 " delay before pressing "p" would accidentally paste).
 " \l       : list buffers
@@ -229,7 +293,7 @@ nnoremap <Leader>6 :6b<CR>
 nnoremap <Leader>7 :7b<CR>
 nnoremap <Leader>8 :8b<CR>
 nnoremap <Leader>9 :9b<CR>
-nnoremap <Leader>0 :10b<CR>
+nnoremap <Leader>0 :10b<CR> nnoremap <Leader>d :bd<CR>
 
 let c = 1
 while c <= 99
@@ -245,5 +309,8 @@ nnoremap <leader>s :mksession<CR>
 
 " change highlight
 hi MatchParen cterm=bold ctermbg=none ctermfg=magenta
+
+set rtp+=~/.fzf
+
 
 set path+=**
