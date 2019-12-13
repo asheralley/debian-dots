@@ -48,8 +48,8 @@ module-margin-right = 3
 ;font-4 = FontAwesome:size=10;0
 
 ;font-0 = NotoSans-Regular:size=8;0
-;font-0 = SauceCodePro Nerd Font Mono:pixelsize=10;1
-font-0 = Anonymice Nerd Font:pixelsize=9;1
+font-0 = SauceCodePro Nerd Font Mono:pixelsize=12;1
+;font-0 = Anonymice Nerd Font:pixelsize=17;1
 font-1 = Anonymice Nerd Font Mono:pixelsize=17;1 
 font-2 = siji:pixelsize=10;1
 
@@ -101,7 +101,7 @@ module-margin-right = 6
 ;font-3 = siji:pixelsize=10;1
 
 font-0 = DruidSansMono Nerd Font:pixelsize=10;1
-font-1 = Anonymice Nerd Font Mono:pixelsize=18;1 
+font-1 = Anonymice Nerd Font Mono:pixelsize=17;1 
 font-2 = siji:pixelsize=10;1
 
 modules-left = i3
@@ -128,8 +128,8 @@ underline-color = ${bar/bottom.underline-color}
 overline-size = ${bar/bottom.overline-size}
 overline-color = ${bar/bottom.overline-color}
 
-border-bottom.= ${bar/bottom.border-bottom}
-border-bottom.color = ${bar/bottom.border-bottom-color}
+border-bottom = ${bar/bottom.border-bottom}
+border-bottom-color = ${bar/bottom.border-bottom-color}
 
 spacing = ${bar/bottom.spacing}
 padding-left = ${bar/bottom.padding-left}
@@ -334,16 +334,19 @@ interface = wlp8s0
 interval = 2.0
 ping-interval = 10
 
-format-connected = <ramp-signal> <label-connected>
-label-connected = Wifi
+format-connected = <label-connected> <ramp-signal>
+label-connected = 
 label-disconnected = nf-mdi-wifi_off   not connected
 label-disconnected-foreground = #66
 
-ramp-signal-0 = 
-ramp-signal-1 =  
-ramp-signal-2 = 
-ramp-signal-3 = 
-ramp-signal-4 = 
+ramp-signal-foreground = #aaff77
+ramp-signal-0 = ▁
+ramp-signal-1 = ▁▂ 
+ramp-signal-2 = ▁▂▃▄
+ramp-signal-3 = ▁▂▃▄▅
+ramp-signal-4 = ▁▂▃▄▅▆
+ramp-signal-5 = ▁▂▃▄▅▆▇
+
 
 animation-packetloss-0 = 
 animation-packetloss-0-foreground = #ffa64c
@@ -406,10 +409,10 @@ date = %%{F#bb}%a, %d %b%%{F-}  %%{F#ee}%H:%M%%{F-}
 type = internal/alsa
 ;speaker-mixer = Speaker
 ;headphone-mixer = Headphone
-;headphone-id = 9
+headphone-id = 9
 
-format-volume = <label-volume>
-label-volume =  %percentage%%
+format-volume = <label-volume> <bar-volume>
+label-volume =  
 label-volume-foreground = #fff
 
 ;format-muted-prefix = " "
@@ -486,11 +489,11 @@ menu-1-0-foreground = ${colors.accent}
 menu-1-0-exec = menu-open-0
 menu-1-1 = Reboot
 menu-1-1-foreground = ${colors.accent}
-menu-1-1-exec = sudo reboot
+menu-1-1-exec = systemctl reboot
 
 menu-2-0 = Power off
 menu-2-0-foreground = ${colors.accent}
-menu-2-0-exec = sudo poweroff
+menu-2-0-exec = systemctl poweroff
 menu-2-1 = Cancel
 menu-2-1-foreground = ${colors.accent}
 menu-2-1-exec = menu-open-0

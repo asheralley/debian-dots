@@ -100,8 +100,8 @@ map <C-n> :NERDTreeToggle<CR>
 
 " Colorshceme
 set t_Co=256
-colorscheme hybrid_material
-" colorscheme nord
+" colorscheme hybrid_material
+colorscheme nord
 " colorscheme one
 " colorscheme onedark
 " colorscheme focuspoint
@@ -150,7 +150,7 @@ autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.gra
 
 " max line length that prettier will wrap on
 " Prettier default: 80
-let g:prettier#config#print_width = 80
+let g:prettier#config#print_width = 8000
 
 " number of spaces per indentation level
 " Prettier default: 2
