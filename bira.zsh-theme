@@ -2,14 +2,14 @@
 local return_code="%(?..%{$fg[red]%}%? ↵%{$reset_color%})"
 
 if [[ $UID -eq 0 ]]; then
-    local user_host='%{$terminfo[regular]$fg[red]%}[%n] %{$reset_color%}'
-    local user_symbol='#'
+    local user_host='%{$terminfo[regular]$fg[red]%}[%n]%{$reset_color%}'
+    local user_symbol='#'
 else
-    local user_host='%{$terminfo[regular]$fg[white]%}[%m] %{$reset_color%}'
-    local user_symbol='$'
+    local user_host='%{$terminfo[regular]$fg[white]%}[%m]%{$reset_color%}'
+    local user_symbol=''
 fi
 
-local current_dir='%{$terminfo[regular]$fg[blue]%}%~ %{$reset_color%}'
+local current_dir='%{$terminfo[regular]$fg[blue]%}%~%{$reset_color%}'
 local git_branch='$(git_prompt_info)'
 local rvm_ruby='$(ruby_prompt_info)'
 local venv_prompt='$(virtualenv_prompt_info)'
@@ -17,8 +17,9 @@ local venv_prompt='$(virtualenv_prompt_info)'
 ZSH_THEME_RVM_PROMPT_OPTIONS="i v g"
 
 PROMPT="
-╭─%{$fg[white]%}[%T]%{$reset_color%} ${user_host}${current_dir}${rvm_ruby}${git_branch}${venv_prompt}
-╰─%B${user_symbol}%b "
+╭─${user_host}──[0][0]──%{$fg[white]%}[%T]%{$reset_color%} 
+╰─[${current_dir}]${git_branch}${rvm_ruby}${venv_prompt}
+%B${user_symbol}%b "
 RPROMPT="%B${return_code}%b"
 
 ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[yellow]%}["
