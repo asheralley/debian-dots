@@ -5,7 +5,7 @@ call plug#begin('~/.local/share/nvim/plugged')
 
 Plug 'tpope/vim-surround'
 
-Plug 'tpope/vim-commentary'
+Plug 'tomtom/tcomment_vim'
 
 " Launch Ranger from Vim.
 Plug 'francoiscabrol/ranger.vim'
@@ -25,6 +25,7 @@ Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
+Plug 'SirVer/ultisnips'
 
 " Snippets are separated from the engine. Add this if you want them:
 Plug 'honza/vim-snippets'
@@ -43,6 +44,8 @@ Plug 'junegunn/fzf.vim'
 
 Plug 'jiangmiao/auto-pairs'
 
+Plug 'valloric/matchtagalways'
+
 " Color theme :
 Plug 'joshdick/onedark.vim'
 
@@ -60,36 +63,51 @@ Plug 'bling/vim-bufferline'
 
 Plug 'neoclide/coc.nvim', {'do': { -> coc#util#install()}}
 
+Plug 'ryanoasis/vim-devicons'
 " Initialize plugin system
 call plug#end()
 
-" Use <C-l> for trigger snippet expand.
-imap <C-l> <Plug>(coc-snippets-expand)
-"th
-"" Use <C-j> for select text for visual placeholder of snippet.
-vmap <C-j> <Plug>(coc-snippets-select)
-"
-"" Use <C-j> for jump to next placeholder, it's default of coc.nvim
-let g:coc_snippet_next = '<c-j>'
-"
-"" Use <C-k> for jump to previous placeholder, it's default of coc.nvim
-let g:coc_snippet_prev = '<c-k>'
-"
-"" Use <C-j> for both expand and jump (make expand higher priority.)
-imap <C-j> <Plug>(coc-snippets-expand-jump)
-"
+set guifont=SauceCodePro\ Nerd\ Font\ 9.5
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? coc#_select_confirm() :
-      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
-"
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-let g:coc_snippet_next = '<tab>'
+" Use <c-space> for trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Trigger configuration. Do not use <tab> if you use
+" https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger='<leader><tab>'
+
+" shortcut to go to next position
+let g:UltiSnipsJumpForwardTrigger='<c-j>'
+
+" shortcut to list snippets
+let g:UltiSnipsListSnippets='<c-tab>'
+
+" shortcut to go to previous position
+let g:UltiSnipsJumpBackwardTrigger='<c-k>'
+
+" snippet directory
+" let g:UltiSnipsSnippetsDir="~/.config/nvim/my_snippets"
+let g:UltiSnipsSnippetDirectories=['UltiSnips', 'my_snippets']
+
+"let $HOME = expand('~')
+"let g:UltiSnipsSnippetsDir = $HOME."~/.config/nvim/my_snippets"
+"let g:UltiSnipsSnippetDirectories=[$HOME.'/.config/nvim/my_snippets']
 
 " NERDTreeToggle
 map <C-n> :NERDTreeToggle<CR>
@@ -98,16 +116,8 @@ map <C-n> :NERDTreeToggle<CR>
 "autocmd StdinReadPre * let s:std_in=1
 "autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
-" Colorshceme
-set t_Co=256
-" colorscheme hybrid_material
-colorscheme nord
-" colorscheme one
-" colorscheme onedark
-" colorscheme focuspoint
 
-let g:airline_theme='deus'
-
+let g:airline_theme='bubblegum'
 
 " It's useful to show the buffer number in the status line.
 " set laststatus=2 statusline=%02n:%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
@@ -118,32 +128,32 @@ let g:airline#extensions#tabline#enabled = 1
 " air-line
 let g:airline_powerline_fonts = 1
 
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
+"if !exists('g:airline_symbols')
+"    let g:airline_symbols = {}
+"endif
 
 " unicode symbols
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.linenr = '␊'
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.whitespace = 'Ξ'
+"let g:airline_left_sep = '»'
+"let g:airline_left_sep = '▶'
+"let g:airline_right_sep = '«'
+"let g:airline_right_sep = '◀'
+"let g:airline_symbols.linenr = '␊'
+"let g:airline_symbols.linenr = '␤'
+"let g:airline_symbols.linenr = '¶'
+"let g:airline_symbols.branch = '⎇'
+"let g:airline_symbols.paste = 'ρ'
+"let g:airline_symbols.paste = 'Þ'
+"let g:airline_symbols.paste = '∥'
+"let g:airline_symbols.whitespace = 'Ξ'
 
 " airline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
+"let g:airline_left_sep = ''
+"let g:airline_left_alt_sep = ''
+"let g:airline_right_sep = ''
+"let g:airline_right_alt_sep = ''
+"let g:airline_symbols.branch = ''
+"let g:airline_symbols.readonly = ''
+"let g:airline_symbols.linenr = ''
 
 let g:prettier#autoformat = 0
 autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html Prettier
@@ -214,9 +224,16 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 " fzf set up here
-nnoremap <C-p> :Files<CR>
-nnoremap <Leader>b :Buffers<CR>
+nnoremap <silent> <C-p> :Files<CR>
+nnoremap <Leader>t :Buffers<CR>
 nnoremap <Leader>h :History<CR>
+
+nnoremap <C-p> :FZF<CR>
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-s': 'split',
+  \ 'ctrl-v': 'vsplit'
+  \}
 
 " Emmet set up here
 let g:user_emmet_leader_key='<C-e>'
@@ -227,6 +244,39 @@ syntax on
 "let g:javascript_plugin_flow = 1
 
 let g:AutoPairsFlyMode = 1 
+
+" open new split panes to right and below
+set splitright
+set splitbelow
+" turn terminal to normal mode with escape
+tnoremap <Esc> <C-\><C-n>
+" start terminal in insert mode
+au BufEnter * if &buftype == 'terminal' | :startinsert | endif
+" open terminal on ctrl+n
+function! OpenTerminal()
+  split term://bash
+  resize 10
+endfunction
+nnoremap <F12> :call OpenTerminal()<CR>
+
+" use alt+hjkl to move between split/vsplit panels
+" tnoremap <A-h> <C-\><C-n><C-w>h
+" tnoremap <A-j> <C-\><C-n><C-w>j
+" tnoremap <A-k> <C-\><C-n><C-w>k
+" tnoremap <A-l> <C-\><C-n><C-w>l
+" nnoremap <A-h> <C-w>h
+" nnoremap <A-j> <C-w>j
+" nnoremap <A-k> <C-w>k
+" nnoremap <A-l> <C-w>l
+
+" Split window
+nmap ss :split<Return><C-w>w
+nmap sv :vsplit<Return><C-w>w
+" Move window
+map sh <C-w>h
+map sk <C-w>k
+map sj <C-w>j
+map sl <C-w>l
 
 set number relativenumber
 
@@ -250,7 +300,10 @@ set hlsearch
 set confirm
 set encoding=UTF-8
 
-"set colorcolumn=80
+set splitbelow
+set splitright
+
+set colorcolumn=80
 let mapleader='\'
 
 " turn off search highlight
@@ -267,6 +320,9 @@ noremap E $
 " $/^ doesn't do anything
 nnoremap $ <nop>
 nnoremap ^ <nop>
+
+" sane pasting from clipboard
+nnoremap <Leader>v "+p
 
 " highlight last inserted text
 nnoremap gV '[v']
@@ -314,6 +370,10 @@ hi MatchParen cterm=bold ctermbg=none ctermfg=magenta
 
 set rtp+=~/.fzf
 
-" this is for getting the cursor in the middle of an expanded tab
+" Colorshceme
+set t_Co=256
+colorscheme onedark
+
+"" this is for getting the cursor in the middle of an expanded tab
 inoremap <leader><CR> <CR><C-o>==<C-o>O
 set path+=**
